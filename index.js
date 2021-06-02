@@ -1,66 +1,64 @@
 import express from "express";
-import fs from "fs";
+import productos from "./api/productos.js";
 
+// creo una app de tipo express
 const app = express();
-const port = 8080;
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-let contadorRuta1 = 0,
-  contadorRuta2 = 0;
+// completar el codigo...
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/api/productos/listar", (req, res) => {
+    try {
+        const listaProductos = productos.obtenerProductos();
+        if (!listaProductos.length) {
+            throw new Error("no hay productos cargados");
+        }
+        return res.json(listaProductos);
+    } catch (e) {
+        return res.json({
+            error: e.message,
+        });
+    }
 });
 
-app.get("/items", async (req, res) => {
-  contadorRuta1++;
-  try {
-    const productos = await fs.promises.readFile("./productos.txt");
-    res.send(
-      `<pre>${JSON.stringify(
-        {
-          items: JSON.parse(`${productos}`),
-          cantidad: JSON.parse(`${productos}`).length,
-        },
-        null,
-        2
-      )}</pre>`
-    );
-  } catch {
-    console.log("Hubo un error al traer los productos");
-  }
+app.get("/api/productos/listar/:id", (req, res) => {
+    try {
+        const response = productos.obtenerProductoPorId(req.params.id);
+        if (response === undefined) {
+            throw new Error("producto no encontrado");
+        }
+        return res.json(response);
+    } catch (e) {
+        return res.json({
+            error: e.message,
+        });
+    }
 });
 
-app.get("/item-random", async (req, res) => {
-  contadorRuta2++;
-  try {
-    const productos = await fs.promises.readFile("./productos.txt");
-    const productObj = JSON.parse(`${productos}`);
-    const id = Math.floor(Math.random() * (productObj.length - 0) + 0);
-    res.send(
-      `<pre>${JSON.stringify({
-        item: productObj[id],
-      })}</pre>`
-    );
-  } catch {
-    console.log("Hubo un error al traer un producto random");
-  }
+app.post("/api/productos/guardar", (req, res) => {
+    try {
+        if (!Object.keys(req.body).length) {
+            throw new Error("no hay productos para guardar");
+        }
+        const listaProductos = productos.obtenerProductos();
+        productos.guardarProductos({ ...req.body, id: listaProductos.length });
+        return res.json({ estado: "GUARDADO", producto: req.body });
+    } catch (e) {
+        return res.json({
+            error: e.message,
+        });
+    }
 });
 
-app.get("/visitas", (req, res) => {
-  try {
-    res.send(
-        `<pre>${JSON.stringify({
-          visitas: {
-            items: contadorRuta1,
-            item: contadorRuta2,
-          },
-        })}</pre>`
-      );
-  } catch {
-      console.log("Hubo un error al contar las rutas")
-  }
+// pongo a escuchar el servidor en el puerto indicado
+const puerto = 8080;
+
+const server = app.listen(puerto, () => {
+    console.log(`servidor escuchando en http://localhost:${puerto}`);
 });
 
-app.listen(port, () => {
-  console.log(`Puerto en consola: ${port}`);
+// en caso de error, avisar
+server.on("error", (error) => {
+    console.log("error en el servidor:", error);
 });
