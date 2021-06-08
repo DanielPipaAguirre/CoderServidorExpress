@@ -1,6 +1,5 @@
 class Productos {
     constructor() {
-        // incializar variables
         this.producto = [];
     }
 
@@ -16,10 +15,19 @@ class Productos {
         this.producto.push(item);
     }
 
-    // agregar los metodos requeridos
+    borrarProductoPorId(id) {
+        this.producto = this.producto.filter((item) => item.id !== +id);
+    }
+
+    actualizarProductoPorId(newItem, id) {
+        const producto = this.producto.findIndex((item) => item.id === +id);
+        if (producto === -1) {
+            return false;
+        } else {
+            this.producto[producto] = { ...newItem, id: +id };
+            return true;
+        }
+    }
 }
 
-// exporto una instancia de la clase
-const productos = new Productos();
-
-export default productos;
+module.exports = new Productos();
