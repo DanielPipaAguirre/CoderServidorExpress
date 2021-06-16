@@ -1,0 +1,17 @@
+extends layout
+
+block partial 
+    body
+        .jumbotron(style="min-height: 100vh")
+            h1(style="color:blue") Ingrese Producto
+            form(action='/api/productos/guardar', method='POST')
+                .mb-3
+                    label(for="title", class="form-label") Nombre
+                    input(type='text', class="form-control", name='title', id="title", aria-describedby="emailHelp")
+                .mb-3
+                    label(for="price", class="form-label") Precio
+                    input(type='text', class="form-control", name='price', id="price", aria-describedby="emailHelp")
+                .mb-3
+                    label(for="thumbnail", class="form-label") Foto URL
+                    input(type='text', class="form-control", name='thumbnail', id="thumbnail", aria-describedby="emailHelp")
+                button(type="submit", class="btn btn-success") Enviar
