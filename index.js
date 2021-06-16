@@ -8,16 +8,8 @@ const puerto = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.engine('hbs', handlebars({
-    extname: '.hbs',
-    defaultLayout: 'index.hbs',
-    layoutsDir: __dirname + '/views/layouts',
-    partialsDir: __dirname + '/views/partials/'
-}));
-
-app.set('view engine', 'hbs');
-
-app.set('views', './views');
+app.set('views', './views/layouts');
+app.set('view engine', 'ejs');
 
 /* app.use(express.static(__dirname + "/public")); */
 
@@ -27,8 +19,7 @@ app.get("/productos/vista", (req, res) => {
         if (!listaProductos.length) {
             throw new Error("no hay productos cargados");
         }
-        res.render('vista',{hayProductos:true, productos: listaProductos});
-        // return res.json(listaProductos);
+        res.render('vista',{listaProductos});
     } catch (e) {
         /* return res.json({
             error: e.message,

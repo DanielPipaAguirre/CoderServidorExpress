@@ -1,0 +1,13 @@
+<%- include('./index')-%>
+<body>
+  <div class="container mt-3">
+    <div class="jumbotron">
+      <h1>Vista de Productos</h1>
+      <form action="/api/productos/guardar" method="POST">
+        <div class="card custom mt-4">
+          <h2><%=mensajeError%></h2>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
