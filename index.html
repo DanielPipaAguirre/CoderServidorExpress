@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Vista de Productos</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+            integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+            crossorigin="anonymous"
+        />
+        <style>
+            .table td,
+            .table th {
+                vertical-align: middle;
+            }
+            h1 {
+                color: blue;
+            }
+            hr {
+                background-color: #ddd;
+            }
+            .jumbotron {
+                min-height: 100vh;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container mt-3">
+            <div class="jumbotron">
+                <h1>Ingrese Producto</h1>
+                <form id="form">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Nombre</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="title"
+                            id="title"
+                            aria-describedby="emailHelp"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Precio</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="price"
+                            id="price"
+                            aria-describedby="emailHelp"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label for="thumbnail" class="form-label"
+                            >Foto URL</label
+                        >
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="thumbnail"
+                            id="thumbnail"
+                            aria-describedby="emailHelp"
+                        />
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        Enviar
+                    </button>
+                </form>
+            </div>
+
+            <div id="action"></div>
+        </div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"
+            integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+            const action = document.getElementById("action");
+            const title = document.getElementById("title");
+            const price = document.getElementById("price");
+            const thumbnail = document.getElementById("thumbnail");
+            const form = document.getElementById("form");
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                const data = {
+                    "title": form[0].value,
+                    "price": form[1].value,
+                    "thumbnail": form[2].value
+                };
+                console.log(JSON.stringify(data))
+
+                fetch("/api/productos/guardar", {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: "POST",
+                    body: JSON.stringify(data),
+                })
+                    .then((res) => res.json())
+                    .then((productos) => {
+                        form.reset();
+                        socket.emit("update", "ok");
+                    })
+                    .catch((e) => console.log(e));
+            });
+
+            socket.on("productos", function (productos) {
+                action.innerHTML = dataTable(productos);
+            });
+
+            // templates
+            const dataTable = (productos) => {
+                let template = "";
+                if (productos.length) {
+                    template += `
+                    <div class="table-responsive">
+                        <table class="table table-dark">
+                            <tr> <th>Nombre</th> <th>Precio</th> <th>Foto</th></tr>
+                    `;
+
+                    template += productos
+                        .map(
+                            (producto) => `
+                        <tr> 
+                            <td>${producto.title}</td> 
+                            <td>$${producto.price}</td> 
+                            <td>
+                                <img width="50" src=${producto.thumbnail} alt="not found">
+                            </td> 
+                        </tr>    
+                    `
+                        )
+                        .join(" ");
+
+                    template += `
+                            </table>
+                    </div>
+                    `;
+                }
+                return template;
+            };
+        </script>
+    </body>
+</html>

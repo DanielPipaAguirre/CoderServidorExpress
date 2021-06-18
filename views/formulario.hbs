@@ -1,0 +1,33 @@
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+    }
+    h1 {
+        color: blue;
+    }
+    hr {
+        background-color: #ddd;
+    }
+    .jumbotron {
+        min-height: 100vh;
+    }
+</style>
+
+<div class="jumbotron">
+    <h1>Ingrese Producto</h1>
+    <form action="/api/productos/guardar" method="POST"> 
+    <div class="mb-3">
+        <label for="title" class="form-label">Nombre</label>
+        <input type="text" class="form-control" name="title"  id="title" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+        <label for="price" class="form-label">Precio</label>
+        <input type="text" class="form-control" name="price" id="price" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+        <label for="thumbnail" class="form-label">Foto URL</label>
+        <input type="text" class="form-control" name="thumbnail" id="thumbnail" aria-describedby="emailHelp">
+    </div>
+    <button type="submit" class="btn btn-success">Enviar</button> 
+</form>
+</div>
