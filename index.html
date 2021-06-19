@@ -98,22 +98,22 @@
                     "title": form[0].value,
                     "price": form[1].value,
                     "thumbnail": form[2].value
-                };
-                console.log(JSON.stringify(data))
+                }
 
                 fetch("/api/productos/guardar", {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    method: "POST",
+                    method: "post",
                     body: JSON.stringify(data),
                 })
                     .then((res) => res.json())
-                    .then((productos) => {
+                    .then((data) => {
+                        console.log("data",data)
                         form.reset();
                         socket.emit("update", "ok");
                     })
-                    .catch((e) => console.log(e));
+                    .catch((e) => console.log("🎁 error",e));
             });
 
             socket.on("productos", function (productos) {

@@ -37,8 +37,8 @@ router.post("/productos/guardar", (req, res) => {
         }
         const listaProductos = productos.obtenerProductos();
         productos.guardarProductos({ ...req.body, id: listaProductos.length });
-        res.redirect('/');
-        /* return res.json({ estado: "GUARDADO", producto: req.body }); */
+        /* res.redirect('/'); */
+        return res.json({ estado: "GUARDADO", producto: req.body });
     } catch (e) {
         /* return res.json({
             error: e.message,

@@ -1,10 +1,13 @@
-const express = require("express");
 const handlebars = require('express-handlebars');
 const productos = require("./api/productos")
 
+const express = require('express');
 const app = express();
-const http = require("http").Server(app);
-const io = require("socket.io")(http);
+const http = require('http');
+const server = http.createServer(app);
+
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 const puerto = 8080;
 
@@ -52,17 +55,16 @@ io.on("connection", (socket) => {
       io.sockets.emit("productos", productos.obtenerProductos())
     }
   })
-  
 });
 
 const router = require('./routes/productos');
 app.use('/api', router);
 
 
-const server = http.listen(puerto, () => {
+const serverExpress = server.listen(puerto, () => {
     console.log(`servidor escuchando en http://localhost:${puerto}`);
 });
 
-server.on("error", (error) => {
+serverExpress.on("error", (error) => {
     console.log("error en el servidor:", error);
 });
