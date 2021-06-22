@@ -1,0 +1,28 @@
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+    }
+    h1 {
+        color: blue;
+    }
+    hr {
+        background-color: #ddd;
+    }
+    .jumbotron {
+        min-height: 100vh;
+    }
+    .custom {
+        background: rgb(255 241 175 / 93%);
+        padding: 20px;
+        color: #825504;
+    }
+</style>
+
+<div class="jumbotron">
+    <h1>Vista de Productos</h1>
+    <form action="/api/productos/guardar" method="POST"> 
+    <div class="card custom mt-4">
+        <h2>{{mensajeError}} </h2>
+    </div>
+</form>
+</div>

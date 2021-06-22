@@ -32,17 +32,16 @@ router.get("/productos/listar/:id", (req, res) => {
 
 router.post("/productos/guardar", (req, res) => {
     try {
-        if (!Object.keys(req.body).length || !Object.values(req.body).join("")) {
+        if (
+            !Object.keys(req.body).length ||
+            !Object.values(req.body).join("")
+        ) {
             throw new Error("no hay productos para guardar");
         }
         const listaProductos = productos.obtenerProductos();
         productos.guardarProductos({ ...req.body, id: listaProductos.length });
-        res.redirect('/');
-        /* return res.json({ estado: "GUARDADO", producto: req.body }); */
+        return res.json({ estado: "GUARDADO", producto: req.body });
     } catch (e) {
-        /* return res.json({
-            error: e.message,
-        }); */
         res.render("notFound", { mensajeError: e.message });
     }
 });
@@ -58,10 +57,8 @@ router.put("/productos/actualizar/:id", (req, res) => {
                 "El producto que intentas actualizar no se encuentra disponible"
             );
         }
-        if(!Object.keys(req.body).length > 0){
-            throw new Error(
-                "Por favor, indica que campos quieres actualizar"
-            );
+        if (!Object.keys(req.body).length > 0) {
+            throw new Error("Por favor, indica que campos quieres actualizar");
         }
         return res.json({ estado: "ACTUALIZADO", producto: req.body });
     } catch (e) {
