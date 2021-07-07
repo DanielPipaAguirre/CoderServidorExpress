@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
     res.sendFile("index.html");
 });
 
-io.on("connection", async (socket) => {
+/* io.on("connection", async (socket) => {
     console.log("Nuevo cliente conectado");
     socket.emit("productos", productos.obtenerProductos());
 
@@ -65,10 +65,11 @@ io.on("connection", async (socket) => {
         const messages = await chat.obtenerMesajesDeArchivo()
         io.sockets.emit('mensajes', messages);
     });
-});
+}); */
 
-const router = require("./routes/productos");
-app.use("/api", router);
+const routerProduct = require("./routes/productos");
+const routerChat = require("./routes/chat");
+app.use("/api", routerChat, routerProduct);
 
 const serverExpress = server.listen(puerto, () => {
     console.log(`servidor escuchando en http://localhost:${puerto}`);

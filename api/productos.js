@@ -1,32 +1,33 @@
+const createTable = require("../persistencia/create_table_products");
+const insertProduct = require("../persistencia/insert_products");
+const selectProductById = require("../persistencia/select_where_products");
+const selectProducts = require("../persistencia/select_products");
+const deleteProductById = require("../persistencia/delete_where_products");
+const updateProductById = require("../persistencia/update_table_products");
+
 class Productos {
     constructor() {
-        this.producto = [];
+        createTable();
     }
 
     obtenerProductoPorId(id) {
-        return this.producto.filter((item) => item.id === +id)[0];
+        return selectProductById(id);
     }
 
     obtenerProductos() {
-        return this.producto;
+        return selectProducts();
     }
 
     guardarProductos(item) {
-        this.producto.push(item);
+        insertProduct(item);
     }
 
     borrarProductoPorId(id) {
-        this.producto = this.producto.filter((item) => item.id !== +id);
+        deleteProductById(id);
     }
 
     actualizarProductoPorId(newItem, id) {
-        const producto = this.producto.findIndex((item) => item.id === +id);
-        if (producto === -1) {
-            return false;
-        } else {
-            this.producto[producto] = { ...newItem, id: +id };
-            return true;
-        }
+        return updateProductById(id, newItem);
     }
 }
 

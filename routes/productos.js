@@ -2,9 +2,9 @@ const express = require("express");
 const productos = require("../api/productos");
 const router = express.Router();
 
-router.get("/productos/listar", (req, res) => {
+router.get("/productos/listar", async (req, res) => {
     try {
-        const listaProductos = productos.obtenerProductos();
+        const listaProductos = await productos.obtenerProductos();
         if (!listaProductos.length) {
             throw new Error("no hay productos cargados");
         }
@@ -16,10 +16,10 @@ router.get("/productos/listar", (req, res) => {
     }
 });
 
-router.get("/productos/listar/:id", (req, res) => {
+router.get("/productos/listar/:id", async (req, res) => {
     try {
-        const response = productos.obtenerProductoPorId(req.params.id);
-        if (response === undefined) {
+        const response = await productos.obtenerProductoPorId(req.params.id);
+        if (!response.length) {
             throw new Error("producto no encontrado");
         }
         return res.json(response);
@@ -38,21 +38,17 @@ router.post("/productos/guardar", (req, res) => {
         ) {
             throw new Error("no hay productos para guardar");
         }
-        const listaProductos = productos.obtenerProductos();
-        productos.guardarProductos({ ...req.body, id: listaProductos.length });
+        productos.guardarProductos({ ...req.body });
         return res.json({ estado: "GUARDADO", producto: req.body });
     } catch (e) {
         res.render("notFound", { mensajeError: e.message });
     }
 });
 
-router.put("/productos/actualizar/:id", (req, res) => {
+router.put("/productos/actualizar/:id", async (req, res) => {
     try {
-        const actualizando = productos.actualizarProductoPorId(
-            req.body,
-            req.params.id
-        );
-        if (!actualizando) {
+        const response = await productos.obtenerProductoPorId(req.params.id);
+        if (!response.length) {
             throw new Error(
                 "El producto que intentas actualizar no se encuentra disponible"
             );
@@ -60,6 +56,7 @@ router.put("/productos/actualizar/:id", (req, res) => {
         if (!Object.keys(req.body).length > 0) {
             throw new Error("Por favor, indica que campos quieres actualizar");
         }
+        await productos.actualizarProductoPorId(req.body, req.params.id);
         return res.json({ estado: "ACTUALIZADO", producto: req.body });
     } catch (e) {
         return res.json({
@@ -68,10 +65,11 @@ router.put("/productos/actualizar/:id", (req, res) => {
     }
 });
 
-router.delete("/productos/borrar/:id", (req, res) => {
+router.delete("/productos/borrar/:id", async (req, res) => {
     try {
-        const response = productos.obtenerProductoPorId(req.params.id);
-        if (response === undefined) {
+        const response = await productos.obtenerProductoPorId(req.params.id);
+        console.log(response);
+        if (!response.length) {
             throw new Error("producto no encontrado");
         }
         productos.borrarProductoPorId(req.params.id);

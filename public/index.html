@@ -141,7 +141,7 @@
                     title: form[0].value,
                     price: form[1].value,
                     thumbnail: form[2].value,
-                }
+                };
 
                 fetch("/api/productos/guardar", {
                     headers: {
@@ -153,32 +153,45 @@
                     .then((res) => res.json())
                     .then((data) => {
                         form.reset();
-                        socket.emit("update", "ok");
+                        /* socket.emit("update", "ok"); */
                     })
                     .catch((e) => console.log("error", e));
             });
 
-            formMessage.addEventListener("submit",function(e){
+            formMessage.addEventListener("submit", function (e) {
                 e.preventDefault();
                 const data = {
                     author: formMessage[0].value,
                     text: formMessage[1].value,
-                    date: new Date().toLocaleString()
-                }
+                    date: new Date().toLocaleString(),
+                };
                 formMessage.reset();
+                fetch("/api/mensajes/guardar", {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: "post",
+                    body: JSON.stringify(data),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        form.reset();
+                    })
+                    .catch((e) => console.log("error", e));
+                /* 
                 if(data.author){
                     socket.emit("nuevo-mensaje", data);
-                }
-            })
+                } */
+            });
 
-            socket.on("productos", function (productos) {
+            /*   socket.on("productos", function (productos) {
                 action.innerHTML = dataTable(productos);
             });
 
             socket.on("mensajes", (data) => {
                 message.innerHTML = render(data);
             });
-
+ */
             const dataTable = (productos) => {
                 let template = "";
                 if (productos.length) {
@@ -214,19 +227,18 @@
                 let template = "";
                 if (data.length) {
                     template += data
-                    .map((elem, index) => {
-                        return `<div class="d-flex chat">
+                        .map((elem, index) => {
+                            return `<div class="d-flex chat">
                                 <strong>${elem.author}</strong>
                                 <p>${elem.date}</p>
                                 <em>${elem.text}</em>
                             </div>
                         `;
-                    })
-                    .join(" ");
+                        })
+                        .join(" ");
                 }
                 return template;
             };
-
         </script>
     </body>
 </html>
