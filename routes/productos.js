@@ -1,83 +1,60 @@
 const express = require("express");
-const productos = require("../api/productos");
 const router = express.Router();
+const controller = require("../api/productos");
 
 router.get("/productos/listar", async (req, res) => {
     try {
-        const listaProductos = await productos.obtenerProductos();
-        if (!listaProductos.length) {
-            throw new Error("no hay productos cargados");
-        }
+        const listaProductos = await controller.findAll();
         return res.json(listaProductos);
     } catch (e) {
-        return res.json({
-            error: e.message,
-        });
+        return res.status(500).send({ error: e.message });
     }
 });
 
 router.get("/productos/listar/:id", async (req, res) => {
     try {
-        const response = await productos.obtenerProductoPorId(req.params.id);
-        if (!response.length) {
-            throw new Error("producto no encontrado");
-        }
+        const response = await controller.findById(req.params.id);
+        if (!response) throw Error("No se encontró el producto");
         return res.json(response);
     } catch (e) {
-        return res.json({
-            error: e.message,
-        });
+        return res.status(500).send({ error: e.message });
     }
 });
 
-router.post("/productos/guardar", (req, res) => {
+router.post("/productos/guardar", async (req, res) => {
     try {
         if (
             !Object.keys(req.body).length ||
             !Object.values(req.body).join("")
         ) {
-            throw new Error("no hay productos para guardar");
+            throw new Error("No hay productos para guardar");
         }
-        productos.guardarProductos({ ...req.body });
+        await controller.create(req.body);
         return res.json({ estado: "GUARDADO", producto: req.body });
     } catch (e) {
-        res.render("notFound", { mensajeError: e.message });
+        return res.status(500).send({ error: e.message });
     }
 });
 
 router.put("/productos/actualizar/:id", async (req, res) => {
     try {
-        const response = await productos.obtenerProductoPorId(req.params.id);
-        if (!response.length) {
-            throw new Error(
-                "El producto que intentas actualizar no se encuentra disponible"
-            );
-        }
         if (!Object.keys(req.body).length > 0) {
             throw new Error("Por favor, indica que campos quieres actualizar");
         }
-        await productos.actualizarProductoPorId(req.body, req.params.id);
+        await controller.update(req.params.id, req.body);
         return res.json({ estado: "ACTUALIZADO", producto: req.body });
     } catch (e) {
-        return res.json({
-            error: e.message,
-        });
+        return res.status(500).send({ error: e.message });
     }
 });
 
 router.delete("/productos/borrar/:id", async (req, res) => {
     try {
-        const response = await productos.obtenerProductoPorId(req.params.id);
-        console.log(response);
-        if (!response.length) {
-            throw new Error("producto no encontrado");
-        }
-        productos.borrarProductoPorId(req.params.id);
-        return res.json({ estado: "BORRADO", producto: response });
+        const producto = await controller.findById(req.params.id);
+        await controller.remove(req.params.id);
+        return res.json({ estado: "BORRADO", producto: producto });
     } catch (e) {
-        return res.json({
-            error: e.message,
-        });
+        return res.status(500).send({ error: e.message });
     }
 });
 

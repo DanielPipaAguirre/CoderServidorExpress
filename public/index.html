@@ -124,9 +124,7 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
-        <script src="/socket.io/socket.io.js"></script>
         <script>
-            const socket = io();
             const action = document.getElementById("action");
             const message = document.getElementById("message");
             const title = document.getElementById("title");
@@ -153,7 +151,6 @@
                     .then((res) => res.json())
                     .then((data) => {
                         form.reset();
-                        /* socket.emit("update", "ok"); */
                     })
                     .catch((e) => console.log("error", e));
             });
@@ -162,8 +159,7 @@
                 e.preventDefault();
                 const data = {
                     author: formMessage[0].value,
-                    text: formMessage[1].value,
-                    date: new Date().toLocaleString(),
+                    text: formMessage[1].value
                 };
                 formMessage.reset();
                 fetch("/api/mensajes/guardar", {
@@ -178,67 +174,7 @@
                         form.reset();
                     })
                     .catch((e) => console.log("error", e));
-                /* 
-                if(data.author){
-                    socket.emit("nuevo-mensaje", data);
-                } */
             });
-
-            /*   socket.on("productos", function (productos) {
-                action.innerHTML = dataTable(productos);
-            });
-
-            socket.on("mensajes", (data) => {
-                message.innerHTML = render(data);
-            });
- */
-            const dataTable = (productos) => {
-                let template = "";
-                if (productos.length) {
-                    template += `
-                    <div class="table-responsive">
-                        <table class="table table-dark">
-                            <tr> <th>Nombre</th> <th>Precio</th> <th>Foto</th></tr>
-                    `;
-
-                    template += productos
-                        .map(
-                            (producto) => `
-                        <tr> 
-                            <td>${producto.title}</td> 
-                            <td>$${producto.price}</td> 
-                            <td>
-                                <img width="50" src=${producto.thumbnail} alt="not found">
-                            </td> 
-                        </tr>    
-                    `
-                        )
-                        .join(" ");
-
-                    template += `
-                            </table>
-                    </div>
-                    `;
-                }
-                return template;
-            };
-
-            const render = (data) => {
-                let template = "";
-                if (data.length) {
-                    template += data
-                        .map((elem, index) => {
-                            return `<div class="d-flex chat">
-                                <strong>${elem.author}</strong>
-                                <p>${elem.date}</p>
-                                <em>${elem.text}</em>
-                            </div>
-                        `;
-                        })
-                        .join(" ");
-                }
-                return template;
-            };
         </script>
     </body>
 </html>

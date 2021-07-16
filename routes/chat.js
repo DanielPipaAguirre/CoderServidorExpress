@@ -1,83 +1,61 @@
 const express = require("express");
-const chat = require("../api/chat");
 const router = express.Router();
+const controller = require("../api/chat");
 
 router.get("/mensajes/listar", async (req, res) => {
     try {
-        const mensajes = await chat.obtenerChat();
-        if (!mensajes.length) {
-            throw new Error("no hay mensajes cargados");
-        }
-        return res.json(mensajes);
+        const response = await controller.findAll();
+        if (!response.length) throw Error("No se encontraron mensajes");
+        return res.json(response);
     } catch (e) {
-        return res.json({
-            error: e.message,
-        });
+        return res.status(500).send({ error: e.message });
     }
 });
 
 router.get("/mensajes/listar/:id", async (req, res) => {
     try {
-        const response = await chat.obtenerChatPorId(req.params.id);
-        if (!response.length) {
-            throw new Error("mensaje no encontrado");
-        }
+        const response = await controller.findById(req.params.id);
+        if (!response) throw Error("No se encontró el mensaje");
         return res.json(response);
     } catch (e) {
-        return res.json({
-            error: e.message,
-        });
+        return res.status(500).send({ error: e.message });
     }
 });
 
-router.post("/mensajes/guardar", (req, res) => {
+router.post("/mensajes/guardar", async (req, res) => {
     try {
         if (
             !Object.keys(req.body).length ||
             !Object.values(req.body).join("")
         ) {
-            throw new Error("no hay mensajes para guardar");
+            throw new Error("No hay productos para guardar");
         }
-        chat.guardarChat({ ...req.body });
+        await controller.create(req.body);
         return res.json({ estado: "GUARDADO", mensaje: req.body });
     } catch (e) {
-        res.render("notFound", { mensajeError: e.message });
+        return res.status(500).send({ error: e.message });
     }
 });
 
 router.put("/mensajes/actualizar/:id", async (req, res) => {
     try {
-        const response = await chat.obtenerChatPorId(req.params.id);
-        if (!response.length) {
-            throw new Error(
-                "El mensaje que intentas actualizar no se encuentra disponible"
-            );
-        }
         if (!Object.keys(req.body).length > 0) {
             throw new Error("Por favor, indica que campos quieres actualizar");
         }
-        const newBody = { ...req.body, date: new Date().toLocaleString() };
-        await chat.actualizarChatPorId(newBody, req.params.id);
-        return res.json({ estado: "ACTUALIZADO", mensaje: newBody });
+        await controller.update(req.params.id, req.body);
+        return res.json({ estado: "ACTUALIZADO", producto: req.body });
     } catch (e) {
-        return res.json({
-            error: e.message,
-        });
+        return res.status(500).send({ error: e.message });
     }
 });
 
 router.delete("/mensajes/borrar/:id", async (req, res) => {
     try {
-        const response = await chat.obtenerChatPorId(req.params.id);
-        if (!response.length) {
-            throw new Error("mensaje no encontrado");
-        }
-        chat.borrarChatPorId(req.params.id);
-        return res.json({ estado: "BORRADO", mensaje: response });
+        const mensaje = await controller.findById(req.params.id);
+        await controller.remove(req.params.id);
+        return res.json({ estado: "BORRADO", mensaje: mensaje });
     } catch (e) {
-        return res.json({
-            error: e.message,
-        });
+        return res.status(500).send({ error: e.message });
     }
 });
 
