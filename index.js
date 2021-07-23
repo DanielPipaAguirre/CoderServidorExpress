@@ -4,6 +4,8 @@ const http = require("http");
 const server = http.createServer(app);
 const config = require("./config/config.json");
 
+const handlebars = require("express-handlebars");
+
 const productos = require("./api/productos");
 
 require("./database/connection");
@@ -13,13 +15,26 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + "/public"));
 
-app.get("/productos/vista", (req, res) => {
+app.engine(
+    "hbs",
+    handlebars({
+        extname: ".hbs",
+        defaultLayout: "index.hbs",
+        layoutsDir: __dirname + "/views",
+        partialsDir: __dirname + "/views/partials/",
+    })
+);
+
+app.set("view engine", "hbs");
+app.set("views", "./views");
+
+app.get("/productos/vista-test", (req, res) => {
     try {
-        const listaProductos = productos.obtenerProductos();
-        if (!listaProductos.length) {
-            throw new Error("no hay productos cargados");
-        }
-        res.render("vista", { hayProductos: true, productos: listaProductos });
+        const mocks = productos.generar(req.query.cant);
+        res.render("vista", {
+            hayProductos: mocks.length,
+            productos: mocks,
+        });
     } catch (e) {
         res.render("notFound", { mensajeError: e.message });
     }
