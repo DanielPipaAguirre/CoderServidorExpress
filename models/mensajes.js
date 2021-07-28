@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
 
 const schema = mongoose.Schema({
-    author: { type: String, require: true, max: 100 },
-    date: { type: Date, default: new Date() },
+    author: {
+        id: { type: String, require: true, max: 100 },
+        nombre: { type: String, require: true, max: 100 },
+        apellido: { type: String, require: true, max: 100 },
+        edad: { type: Number, require: true },
+        alias: { type: String, require: true, max: 100 },
+        avatar: { type: String, require: true },
+    },
     text: { type: String, max: 400 },
 });
 

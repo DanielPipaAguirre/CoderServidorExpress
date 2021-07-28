@@ -4,9 +4,14 @@ const http = require("http");
 const server = http.createServer(app);
 const config = require("./config/config.json");
 
-const handlebars = require("express-handlebars");
+const chat = require("./api/chat");
 
-const productos = require("./api/productos");
+const { Server } = require("socket.io");
+const io = new Server(server);
+
+const normalizr = require("normalizr");
+const normalize = normalizr.normalize;
+const schema = normalizr.schema;
 
 require("./database/connection");
 
@@ -15,39 +20,71 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + "/public"));
 
-app.engine(
-    "hbs",
-    handlebars({
-        extname: ".hbs",
-        defaultLayout: "index.hbs",
-        layoutsDir: __dirname + "/views",
-        partialsDir: __dirname + "/views/partials/",
-    })
-);
-
-app.set("view engine", "hbs");
-app.set("views", "./views");
-
-app.get("/productos/vista-test", (req, res) => {
-    try {
-        const mocks = productos.generar(req.query.cant);
-        res.render("vista", {
-            hayProductos: mocks.length,
-            productos: mocks,
-        });
-    } catch (e) {
-        res.render("notFound", { mensajeError: e.message });
-    }
-});
-
 app.get("/", (req, res) => {
     res.sendFile("index.html");
 });
 
+io.on("connection", async (socket) => {
+    console.log("Nuevo cliente conectado");
+
+    const messages = await chat.findAll();
+
+    // json normalize
+    const mensajesConId = {
+        id: "mensajes",
+        mensajes: messages.map((mensaje) => ({ ...mensaje._doc })),
+    };
+    const schemaAuthor = new schema.Entity("author", {}, { idAttribute: "id" });
+
+    const schemaMensaje = new schema.Entity(
+        "post",
+        { author: schemaAuthor },
+        { idAttribute: "_id" }
+    );
+    const schemaMensajes = new schema.Entity(
+        "posts",
+        { mensajes: [schemaMensaje] },
+        { idAttribute: "id" }
+    );
+
+    const normalizedData = normalize(mensajesConId, schemaMensajes);
+
+    io.sockets.emit("mensajes", normalizedData);
+
+    socket.on("nuevo-mensaje", async function (data) {
+        await chat.create(data);
+        const messages = await chat.findAll();
+
+        // json normalize
+        const mensajesConId = {
+            id: "mensajes",
+            mensajes: messages.map((mensaje) => ({ ...mensaje._doc })),
+        };
+        const schemaAuthor = new schema.Entity(
+            "author",
+            {},
+            { idAttribute: "id" }
+        );
+
+        const schemaMensaje = new schema.Entity(
+            "post",
+            { author: schemaAuthor },
+            { idAttribute: "_id" }
+        );
+        const schemaMensajes = new schema.Entity(
+            "posts",
+            { mensajes: [schemaMensaje] },
+            { idAttribute: "id" }
+        );
+
+        const normalizedData = normalize(mensajesConId, schemaMensajes);
+
+        io.sockets.emit("mensajes", normalizedData);
+    });
+});
+
 const routerProduct = require("./routes/productos");
-const routerChat = require("./routes/chat");
 app.use("/api", routerProduct);
-app.use("/api", routerChat);
 
 const puerto = process.env.PORT || config.PORT;
 
