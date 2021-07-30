@@ -3,6 +3,7 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const config = require("./config/config.json");
+const session = require("express-session");
 
 const chat = require("./api/chat");
 
@@ -18,10 +19,50 @@ require("./database/connection");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(__dirname + "/public"));
+// app.use(express.static(__dirname + "/public"));
 
-app.get("/", (req, res) => {
-    res.sendFile("index.html");
+app.use(
+    session({
+        secret: "secreto",
+        resave: true,
+        saveUninitialized: true,
+    })
+);
+
+app.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (!err) res.sendFile(__dirname + "/public/logout.html");
+        else res.send({ status: "Logout ERROR", body: err });
+    });
+});
+
+app.get("/login", (req, res) => {
+    res.sendFile(__dirname + "/public/login.html");
+});
+
+app.post("/login", (req, res) => {
+    const { username } = req.body;
+    if (username) {
+        req.session.username = "daniel";
+        return res.json({ username: username });
+    }
+    return res.json({ error: "No se pude logear" });
+});
+
+const auth = (req, res, next) => {
+    if (req.session && req.session.username == "daniel") {
+        return next();
+    } else {
+        return res.status(401).send("No autorizado");
+    }
+};
+
+app.get("/contenido", auth, (req, res) => {
+    res.sendFile(__dirname + "/public/index.html");
+});
+
+app.get("/loginData", auth, (req, res) => {
+    res.json({ username: req.session.username });
 });
 
 io.on("connection", async (socket) => {

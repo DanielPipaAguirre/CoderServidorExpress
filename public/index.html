@@ -15,6 +15,15 @@
             crossorigin="anonymous"
         />
         <style>
+            .login {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .login-button {
+                background-color: #ffeb00;
+            }
+
             .table td,
             .table th {
                 vertical-align: middle;
@@ -50,6 +59,20 @@
     </head>
 
     <body>
+        <div class="container mt-3">
+            <div class="jumbotron">
+                <div class="login">
+                    <h1>
+                        Bienvenido
+                        <span id="login"></span>
+                    </h1>
+                    <button class="login-button">
+                        <a href="/logout"> Desloguear </a>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="container mt-3">
             <div class="jumbotron">
                 <h1>Ingrese Producto</h1>
@@ -191,11 +214,20 @@
             const compresion = document.getElementById("compresion");
             const message = document.getElementById("message");
             const title = document.getElementById("title");
+            const login = document.getElementById("login");
             const price = document.getElementById("price");
             const thumbnail = document.getElementById("thumbnail");
             const form = document.getElementById("form");
             const formMessage = document.getElementById("formMessage");
             const schema = normalizr.schema;
+
+            fetch("/loginData")
+                .then((res) => res.json())
+                .then((data) => {
+                    const { username } = data;
+                    login.innerHTML = username;
+                })
+                .catch((e) => console.log("error", e));
 
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
