@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const config = require("./config/config.json");
 const session = require("express-session");
 const handlebars = require("express-handlebars");
+const cookieParser = require("cookie-parser");
 
 const chat = require("./api/chat");
 
@@ -34,12 +35,20 @@ app.set("view engine", "hbs");
 
 app.set("views", "./views");
 
+const MongoStore = require("connect-mongo");
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+
 app.use(
     session({
+        store: MongoStore.create({
+            mongoUrl:
+                "mongodb://root:root@cluster0-shard-00-00.hbq4k.mongodb.net:27017,cluster0-shard-00-01.hbq4k.mongodb.net:27017,cluster0-shard-00-02.hbq4k.mongodb.net:27017/sesiones?replicaSet=atlas-xw4mwh-shard-0&ssl=true&authSource=admin",
+            mongoOptions: advancedOptions,
+            ttl: 10 * 60
+        }),
         secret: "secreto",
-        resave: true,
-        saveUninitialized: true,
-        cookie: { maxAge: 100000 },
+        resave: false,
+        saveUninitialized: false,
     })
 );
 
@@ -57,8 +66,8 @@ app.post("/login", (req, res) => {
 });
 
 const auth = (req, res, next) => {
-    if(!req.session.username) {
-        return res.redirect('/login')
+    if (!req.session.username) {
+        return res.redirect("/login");
     }
     if (req.session && req.session.username == "daniel") {
         return next();
