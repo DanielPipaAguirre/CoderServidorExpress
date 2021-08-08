@@ -1,3 +1,4 @@
+const { fork } = require("child_process");
 // ------------------------------------------------------------------------------
 //  ROUTING
 // ------------------------------------------------------------------------------
@@ -8,7 +9,31 @@
 function getRoot(req, res) {
     res.send("Bienvenido al ejemplo de passport con facebook");
 }
-
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  INFO
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+function getInfo(req, res) {
+    res.render("info", {
+        argv: process.argv,
+        so: process.platform,
+        version: process.version,
+        memory: process.memoryUsage(),
+        path: process.execPath,
+        pid: process.pid,
+        folder: process.cwd(),
+    });
+}
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  RANDOM
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+function getRandom(req, res) {
+    const max = req.query.cant || 100000000;
+    const computo = fork("./computo.js");
+    computo.send(max);
+    computo.on("message", (element) => {
+        res.json(element);
+    });
+}
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //  LOGIN
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -76,4 +101,6 @@ module.exports = {
     getSignup,
     postSignup,
     getFailsignup,
+    getInfo,
+    getRandom,
 };

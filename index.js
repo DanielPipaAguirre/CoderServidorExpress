@@ -10,8 +10,8 @@ const controllersdb = require("./api/users");
 const User = require("./models/users");
 const chat = require("./api/chat");
 const normalizr = require("normalizr");
-const FacebookStrategy = require('passport-facebook').Strategy;
-const dotenv = require('dotenv')
+const FacebookStrategy = require("passport-facebook").Strategy;
+const dotenv = require("dotenv");
 
 const normalize = normalizr.normalize;
 const schema = normalizr.schema;
@@ -19,8 +19,9 @@ const schema = normalizr.schema;
 dotenv.config();
 
 // completar con sus credenciales
-const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
-const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
+const FACEBOOK_CLIENT_ID = process.argv[3] || process.env.FACEBOOK_CLIENT_ID;
+const FACEBOOK_CLIENT_SECRET =
+    process.argv[4] || process.env.FACEBOOK_CLIENT_SECRET;
 
 /* passport.use(
     "login",
@@ -53,17 +54,22 @@ const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
     )
 ); */
 
-passport.use(new FacebookStrategy({
-    clientID: FACEBOOK_CLIENT_ID,
-    clientSecret: FACEBOOK_CLIENT_SECRET,
-    callbackURL: '/auth/facebook/callback',
-    profileFields: ['id', 'displayName', 'photos', 'emails'],
-    scope: ['email']
-}, function (accessToken, refreshToken, profile, done) {
-    console.log(JSON.stringify(profile, null, 3));
-    let userProfile = profile;
-    return done(null, userProfile);
-}));
+passport.use(
+    new FacebookStrategy(
+        {
+            clientID: FACEBOOK_CLIENT_ID,
+            clientSecret: FACEBOOK_CLIENT_SECRET,
+            callbackURL: "/auth/facebook/callback",
+            profileFields: ["id", "displayName", "photos", "emails"],
+            scope: ["email"],
+        },
+        function (accessToken, refreshToken, profile, done) {
+            console.log(JSON.stringify(profile, null, 3));
+            let userProfile = profile;
+            return done(null, userProfile);
+        }
+    )
+);
 
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -161,6 +167,12 @@ app.use(passport.session());
 //  INDEX
 app.get("/", routes.getRoot);
 
+// INFO
+app.get("/info", routes.getInfo);
+
+// RANDOM
+app.get("/randoms", routes.getRandom);
+
 //  LOGIN
 app.get("/login", routes.getLogin);
 /* app.post(
@@ -168,14 +180,15 @@ app.get("/login", routes.getLogin);
     passport.authenticate("login", { failureRedirect: "/faillogin" }),
     routes.postLogin
 );  */
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get("/auth/facebook", passport.authenticate("facebook"));
 
-app.get('/auth/facebook/callback', passport.authenticate('facebook',
-    {
-        successRedirect: '/login',
-        failureRedirect: '/faillogin'
-    }
-));
+app.get(
+    "/auth/facebook/callback",
+    passport.authenticate("facebook", {
+        successRedirect: "/login",
+        failureRedirect: "/faillogin",
+    })
+);
 
 app.get("/faillogin", routes.getFaillogin);
 
@@ -282,12 +295,16 @@ app.use("/api", routerProduct);
 
 // require("./database/connection");
 
+const PORT = process.argv[2] || process.env.PORT;
+
+console.log(process.argv);
+
 controllersdb.conectarDB(config.MONGO_URL, (err) => {
     if (err) return console.log("error en conexión de base de datos", err);
     console.log("BASE DE DATOS CONECTADA");
 
-    server.listen(config.PORT, function (err) {
+    server.listen(PORT, function (err) {
         if (err) return console.log("error en listen server", err);
-        console.log(`Server running on port ${config.PORT}`);
+        console.log(`Server running on port ${PORT}`);
     });
 });

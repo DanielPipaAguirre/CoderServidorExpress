@@ -1,7 +1,6 @@
 # CoderServidorExpress
 Servidor en Express del curso Backend de CoderHouse 🚀
 
-Login/Logout
+Global Process y Child Process
 
-- La ruta principal es http://localhost:8080/login
-- Luego ir a http://localhost:8080/contenido para verficar el login
+- nodemon index.js PORT FACEBOOK_CLIENT_ID FACEBOOK_CLIENT_SECRET
