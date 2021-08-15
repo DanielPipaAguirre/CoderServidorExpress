@@ -1,4 +1,5 @@
 const { fork } = require("child_process");
+const numCPUs = require("os").cpus().length;
 // ------------------------------------------------------------------------------
 //  ROUTING
 // ------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ function getInfo(req, res) {
         path: process.execPath,
         pid: process.pid,
         folder: process.cwd(),
+        cpu: numCPUs,
     });
 }
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

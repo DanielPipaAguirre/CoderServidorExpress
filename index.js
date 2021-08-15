@@ -12,6 +12,8 @@ const chat = require("./api/chat");
 const normalizr = require("normalizr");
 const FacebookStrategy = require("passport-facebook").Strategy;
 const dotenv = require("dotenv");
+const cluster = require("cluster");
+const numCPUs = require("os").cpus().length;
 
 const normalize = normalizr.normalize;
 const schema = normalizr.schema;
@@ -297,14 +299,27 @@ app.use("/api", routerProduct);
 
 const PORT = process.argv[2] || process.env.PORT;
 
-console.log(process.argv);
-
 controllersdb.conectarDB(config.MONGO_URL, (err) => {
     if (err) return console.log("error en conexión de base de datos", err);
-    console.log("BASE DE DATOS CONECTADA");
+    /* console.log("BASE DE DATOS CONECTADA"); */
 
-    server.listen(PORT, function (err) {
-        if (err) return console.log("error en listen server", err);
-        console.log(`Server running on port ${PORT}`);
-    });
+    // CLUSTER
+    if (cluster.isMaster && process.argv[3] === "CLUSTER") {
+        console.log("num CPUs", numCPUs);
+        console.log(`PID MASTER ${process.pid}`);
+
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork(); // creamos un worker para cada cpu
+        }
+
+        // controlamos la salida de los workers
+        cluster.on("exit", (worker) => {
+            console.log("Worker", worker.process.pid, "died");
+        });
+    } else {
+        server.listen(PORT, function (err) {
+            if (err) return console.log("error en listen server", err);
+            console.log(`Server running on port ${PORT}`);
+        });
+    }
 });
