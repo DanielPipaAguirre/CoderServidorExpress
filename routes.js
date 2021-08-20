@@ -14,6 +14,7 @@ function getRoot(req, res) {
 //  INFO
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 function getInfo(req, res) {
+    const PORT = parseInt(process.argv[2]);
     res.render("info", {
         argv: process.argv,
         so: process.platform,
@@ -23,6 +24,7 @@ function getInfo(req, res) {
         pid: process.pid,
         folder: process.cwd(),
         cpu: numCPUs,
+        data: `Servidor express (Nginx) en ${PORT} - PID ${process.pid} - ${new Date().toLocaleString()}`
     });
 }
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
