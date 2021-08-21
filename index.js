@@ -1,5 +1,7 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
+const compression = require("compression");
+const log4js = require("log4js");
 
 const passport = require("passport");
 const bcrypt = require("bcrypt");
@@ -163,6 +165,28 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(compression());
+
+log4js.configure({
+    appenders: {
+        miLoggerConsole: { type: "console" },
+        miLoggerWarn: { type: "file", filename: "warn.log" },
+        miLoggerError: { type: "file", filename: "error.log" },
+    },
+    categories: {
+        default: { appenders: ["miLoggerConsole"], level: "trace" },
+        info: { appenders: ["miLoggerConsole"], level: "info" },
+        warn: {
+            appenders: ["miLoggerConsole", "miLoggerWarn"],
+            level: "warn",
+        },
+        error: {
+            appenders: ["miLoggerConsole", "miLoggerError"],
+            level: "error",
+        },
+    },
+});
+
 // ------------------------------------------------------------------------------
 //  ROUTING GET POST
 // ------------------------------------------------------------------------------
@@ -230,7 +254,6 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 io.on("connection", async (socket) => {
-    console.log("Nuevo cliente conectado");
 
     const messages = await chat.findAll();
 

@@ -1,5 +1,11 @@
 const { fork } = require("child_process");
 const numCPUs = require("os").cpus().length;
+const log4js = require("log4js");
+
+const loggerWarn = log4js.getLogger("warn");
+const loggerError = log4js.getLogger("error");
+const loggerInfo = log4js.getLogger("info");
+
 // ------------------------------------------------------------------------------
 //  ROUTING
 // ------------------------------------------------------------------------------
@@ -24,7 +30,9 @@ function getInfo(req, res) {
         pid: process.pid,
         folder: process.cwd(),
         cpu: numCPUs,
-        data: `Servidor express (Nginx) en ${PORT} - PID ${process.pid} - ${new Date().toLocaleString()}`
+        data: `Servidor express (Nginx) en ${PORT} - PID ${
+            process.pid
+        } - ${new Date().toLocaleString()}`,
     });
 }
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -44,14 +52,14 @@ function getRandom(req, res) {
 function getLogin(req, res) {
     if (req.isAuthenticated()) {
         const user = req.user;
-        console.log("user logueado", user);
+        loggerInfo.info("user logueado");
         res.render("login-ok", {
             usuario: user.displayName,
             photo: user.photos[0].value,
             email: user.emails[0].value,
         });
     } else {
-        console.log("user NO logueado");
+        loggerError.error("user NO logueado");
         res.sendFile(__dirname + "/views/login.html");
     }
 }
@@ -61,37 +69,31 @@ function getSignup(req, res) {
 }
 
 function postLogin(req, res) {
-    const user = req.user;
-    //console.log(user);
-
-    //grabo en user fecha y hora logueo
     res.sendFile(__dirname + "/views/index.html");
 }
 
 function postSignup(req, res) {
-    const user = req.user;
-    //console.log(user);
-
-    //grabo en user fecha y hora logueo
     res.sendFile(__dirname + "/views/index.html");
 }
 
 function getFaillogin(req, res) {
-    console.log("error en login");
+    loggerError.error("error en login");
     res.render("login-error", {});
 }
 
 function getFailsignup(req, res) {
-    console.log("error en signup");
+    loggerError.error("error en signup");
     res.render("signup-error", {});
 }
 
 function getLogout(req, res) {
+    loggerWarn.warn("Usuario deslogueado")
     req.logout();
     res.sendFile(__dirname + "/views/index.html");
 }
 
 function failRoute(req, res) {
+    loggerError.error("No tiene acceso a esta ruta");
     res.status(404).render("routing-error", {});
 }
 

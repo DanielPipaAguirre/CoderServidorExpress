@@ -1,7 +1,8 @@
 # CoderServidorExpress
 Servidor en Express del curso Backend de CoderHouse 🚀
 
-30. Nginx y escalabilidad
+31. Logs, profiling & debug - Parte 1
 
-- pm2 start index.js --watch -- 8081
-- pm2 start index.js --name="server2"  --watch -i max -- 8082
+- Info: Si hace login correcto
+- Error: Cuando accedes a una ruta incorrecta. Cuando no se loguea correctamente.
+- Warn: Cuando el usuario se desloguea
