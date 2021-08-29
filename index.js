@@ -195,6 +195,7 @@ app.get("/", routes.getRoot);
 
 // INFO
 app.get("/info", routes.getInfo);
+app.get("/info-nobloq", routes.getInfoNoBloq);
 
 // RANDOM
 app.get("/randoms", routes.getRandom);

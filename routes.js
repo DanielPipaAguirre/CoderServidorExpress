@@ -21,6 +21,25 @@ function getRoot(req, res) {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 function getInfo(req, res) {
     const PORT = parseInt(process.argv[2]);
+    const data = {
+        argv: process.argv,
+        so: process.platform,
+        version: process.version,
+        memory: process.memoryUsage(),
+        path: process.execPath,
+        pid: process.pid,
+        folder: process.cwd(),
+        cpu: numCPUs,
+        data: `Servidor express (Nginx) en ${PORT} - PID ${
+            process.pid
+        } - ${new Date().toLocaleString()}`,
+    };
+    console.log({ data });
+    res.render("info", data);
+}
+
+function getInfoNoBloq(req, res) {
+    const PORT = parseInt(process.argv[2]);
     res.render("info", {
         argv: process.argv,
         so: process.platform,
@@ -87,7 +106,7 @@ function getFailsignup(req, res) {
 }
 
 function getLogout(req, res) {
-    loggerWarn.warn("Usuario deslogueado")
+    loggerWarn.warn("Usuario deslogueado");
     req.logout();
     res.sendFile(__dirname + "/views/index.html");
 }
@@ -109,4 +128,5 @@ module.exports = {
     getFailsignup,
     getInfo,
     getRandom,
+    getInfoNoBloq,
 };

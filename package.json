@@ -4,14 +4,16 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "start": "0x index.js" ,
     "ServeraTStoJS5": "tsc",
     "ServerES6toJS5": "babel ./server.es6.js -o ./server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node benchmark.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "autocannon": "^7.4.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",

@@ -1,0 +1,200 @@
+Statistical profiling result from nobloq-v8.log, (11089 ticks, 0 unaccounted, 0 excluded).
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+  10803   97.4%          C:\WINDOWS\SYSTEM32\ntdll.dll
+    268    2.4%          C:\Program Files\nodejs\node.exe
+      2    0.0%          C:\WINDOWS\System32\KERNELBASE.dll
+      1    0.0%          C:\WINDOWS\System32\WS2_32.dll
+      1    0.0%          C:\WINDOWS\System32\KERNEL32.DLL
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+      3    0.0%   21.4%  LazyCompile: *SourceNode_walk C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\source-map\lib\source-node.js:221:53
+      2    0.0%   14.3%  LazyCompile: *resolve path.js:130:10
+      2    0.0%   14.3%  LazyCompile: *parse C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:269:30
+      1    0.0%    7.1%  LazyCompile: *wrap C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\code-gen.js:101:22
+      1    0.0%    7.1%  LazyCompile: *pushStackLiteral C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:877:46
+      1    0.0%    7.1%  LazyCompile: *processTicksAndRejections internal/process/task_queues.js:69:35
+      1    0.0%    7.1%  LazyCompile: *next C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\index.js:176:16
+      1    0.0%    7.1%  LazyCompile: *SourceNode C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\source-map\lib\source-node.js:35:20
+      1    0.0%    7.1%  LazyCompile: *<anonymous> internal/fs/utils.js:283:35
+      1    0.0%    7.1%  LazyCompile: *<anonymous> C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\code-gen.js:130:39
+
+ [C++]:
+   ticks  total  nonlib   name
+
+ [Summary]:
+   ticks  total  nonlib   name
+     14    0.1%  100.0%  JavaScript
+      0    0.0%    0.0%  C++
+     15    0.1%  107.1%  GC
+  11075   99.9%          Shared libraries
+
+ [C++ entry points]:
+   ticks    cpp   total   name
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 1.0% are not shown.
+
+   ticks parent  name
+  10803   97.4%  C:\WINDOWS\SYSTEM32\ntdll.dll
+
+    268    2.4%  C:\Program Files\nodejs\node.exe
+    133   49.6%    C:\Program Files\nodejs\node.exe
+     14   10.5%      LazyCompile: ~realpathSync fs.js:1568:22
+     10   71.4%        LazyCompile: ~toRealPath internal/modules/cjs/loader.js:335:20
+     10  100.0%          LazyCompile: ~tryFile internal/modules/cjs/loader.js:326:17
+      9   90.0%            LazyCompile: ~tryExtensions internal/modules/cjs/loader.js:342:23
+      1   10.0%            LazyCompile: ~tryPackage internal/modules/cjs/loader.js:279:20
+      4   28.6%        LazyCompile: *Module._findPath internal/modules/cjs/loader.js:436:28
+      4  100.0%          LazyCompile: ~Module._resolveFilename internal/modules/cjs/loader.js:731:35
+      4  100.0%            LazyCompile: ~Module._load internal/modules/cjs/loader.js:648:24
+      8    6.0%      LazyCompile: ~wrapSafe internal/modules/cjs/loader.js:899:18
+      8  100.0%        LazyCompile: ~Module._compile internal/modules/cjs/loader.js:953:37
+      8  100.0%          LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1008:37
+      6   75.0%            LazyCompile: ~Module.load internal/modules/cjs/loader.js:851:33
+      2   25.0%            LazyCompile: *Module._load internal/modules/cjs/loader.js:648:24
+      5    3.8%      LazyCompile: ~tryStat C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\view.js:174:17
+      5  100.0%        LazyCompile: ~resolve C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\view.js:146:42
+      5  100.0%          LazyCompile: ~lookup C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\view.js:104:40
+      5  100.0%            LazyCompile: ~View C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\view.js:52:14
+      5    3.8%      LazyCompile: ~render C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express-handlebars\lib\express-handlebars.js:150:15
+      5  100.0%        C:\Program Files\nodejs\node.exe
+      5    3.8%      LazyCompile: *render C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express-handlebars\lib\express-handlebars.js:150:15
+      5  100.0%        C:\Program Files\nodejs\node.exe
+      5    3.8%      LazyCompile: *SourceNode_walk C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\source-map\lib\source-node.js:221:53
+      5  100.0%        LazyCompile: *SourceNode_walk C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\source-map\lib\source-node.js:221:53
+      3   60.0%          LazyCompile: *SourceNode_walk C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\source-map\lib\source-node.js:221:53
+      2   66.7%            LazyCompile: *SourceNode_walk C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\source-map\lib\source-node.js:221:53
+      1   33.3%            LazyCompile: ~SourceNode_toString C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\source-map\lib\source-node.js:318:61
+      2   40.0%          LazyCompile: *SourceNode_toString C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\source-map\lib\source-node.js:318:61
+      2  100.0%            C:\Program Files\nodejs\node.exe
+      4    3.0%      LazyCompile: ~stat internal/modules/cjs/loader.js:123:14
+      3   75.0%        LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:436:28
+      3  100.0%          LazyCompile: ~Module._resolveFilename internal/modules/cjs/loader.js:731:35
+      3  100.0%            LazyCompile: ~Module._load internal/modules/cjs/loader.js:648:24
+      1   25.0%        LazyCompile: ~tryFile internal/modules/cjs/loader.js:326:17
+      1  100.0%          LazyCompile: ~tryExtensions internal/modules/cjs/loader.js:342:23
+      1  100.0%            LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:436:28
+      4    3.0%      LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:264:27
+      3   75.0%        LazyCompile: ~nativeModuleRequire internal/bootstrap/loaders.js:297:29
+      1   33.3%          Eval: ~<anonymous> tls.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:264:27
+      1   33.3%          Eval: ~<anonymous> internal/modules/esm/loader.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:264:27
+      1   33.3%          Eval: ~<anonymous> cluster.js:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader internal/bootstrap/loaders.js:264:27
+      1   25.0%        LazyCompile: ~compileForPublicLoader internal/bootstrap/loaders.js:213:25
+      1  100.0%          LazyCompile: ~loadNativeModule internal/modules/cjs/helpers.js:22:26
+      1  100.0%            LazyCompile: ~Module._load internal/modules/cjs/loader.js:648:24
+      3    2.3%      LazyCompile: ~writevGeneric internal/stream_base_commons.js:118:23
+      3  100.0%        LazyCompile: ~Socket._writeGeneric net.js:761:42
+      3  100.0%          LazyCompile: ~Socket._writev net.js:793:36
+      3  100.0%            LazyCompile: ~doWrite _stream_writable.js:393:17
+      3    2.3%      LazyCompile: ~readSync fs.js:536:18
+      3  100.0%        LazyCompile: ~tryReadSync fs.js:349:21
+      3  100.0%          LazyCompile: ~readFileSync fs.js:361:22
+      3  100.0%            LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1008:37
+      3    2.3%      C:\Program Files\nodejs\node.exe
+      2   66.7%        LazyCompile: *quotedString C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\code-gen.js:118:38
+      1   50.0%          LazyCompile: ~pushSource C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:881:34
+      1  100.0%            LazyCompile: ~appendEscaped C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:416:40
+      1   50.0%          LazyCompile: *setupHelperArgs C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:1104:44
+      1  100.0%            LazyCompile: *invokeAmbiguous C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:699:44
+      1   33.3%        LazyCompile: ~getPartials C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express-handlebars\lib\express-handlebars.js:52:20
+      1  100.0%          LazyCompile: ~renderView C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express-handlebars\lib\express-handlebars.js:183:19
+      1  100.0%            LazyCompile: ~render C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\view.js:133:40
+      2    1.5%      LazyCompile: ~setupHelperArgs C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:1104:44
+      1   50.0%        LazyCompile: ~setupHelper C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:1020:36
+      1  100.0%          LazyCompile: ~invokeAmbiguous C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:699:44
+      1  100.0%            LazyCompile: ~compile C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:73:28
+      1   50.0%        LazyCompile: *invokeAmbiguous C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:699:44
+      1  100.0%          LazyCompile: *compile C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:73:28
+      1  100.0%            LazyCompile: ~compileInput C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:507:24
+      2    1.5%      LazyCompile: ~readFileAfterOpen fs.js:257:27
+      2    1.5%      LazyCompile: ~read internal/modules/package_json_reader.js:14:14
+      2  100.0%        LazyCompile: ~readPackage internal/modules/cjs/loader.js:231:21
+      1   50.0%          LazyCompile: ~resolveExports internal/modules/cjs/loader.js:414:24
+      1  100.0%            LazyCompile: ~Module._findPath internal/modules/cjs/loader.js:436:28
+      1   50.0%          LazyCompile: ~readPackageScope internal/modules/cjs/loader.js:262:26
+      1  100.0%            LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1008:37
+      2    1.5%      LazyCompile: ~randomBytes internal/crypto/random.js:52:21
+      2  100.0%        LazyCompile: ~randomBytesSync C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\random-bytes\index.js:72:25
+      2  100.0%          LazyCompile: ~uidSync C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\uid-safe\index.js:75:18
+      2  100.0%            LazyCompile: ~generateSessionId C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express-session\index.js:518:27
+      2    1.5%      LazyCompile: ~popState C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:536:40
+      2  100.0%        LazyCompile: *anonymous C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:549:49
+      2  100.0%          LazyCompile: *next C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:478:32
+      2  100.0%            LazyCompile: ~lex C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:525:30
+      2    1.5%      LazyCompile: ~openSync fs.js:453:18
+      2  100.0%        LazyCompile: ~readFileSync fs.js:361:22
+      2  100.0%          LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1008:37
+      2  100.0%            LazyCompile: ~Module.load internal/modules/cjs/loader.js:851:33
+      2    1.5%      LazyCompile: ~getInfo C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\routes.js:22:17
+      1   50.0%        LazyCompile: ~handle C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\layer.js:86:49
+      1  100.0%          LazyCompile: ~next C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\route.js:114:16
+      1  100.0%            LazyCompile: ~dispatch C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\route.js:98:45
+      1   50.0%        LazyCompile: *handle C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\layer.js:86:49
+      1  100.0%          LazyCompile: ~next C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\route.js:114:16
+      1  100.0%            LazyCompile: ~dispatch C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\route.js:98:45
+      2    1.5%      LazyCompile: ~cookieParser C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\cookie-parser\index.js:44:32
+      1   50.0%        LazyCompile: *trim_prefix C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\index.js:288:23
+      1  100.0%          LazyCompile: *<anonymous> C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\index.js:275:64
+      1  100.0%            LazyCompile: *next C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\index.js:176:16
+      1   50.0%        LazyCompile: *handle C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\layer.js:86:49
+      1  100.0%          LazyCompile: ~trim_prefix C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\index.js:288:23
+      1  100.0%            LazyCompile: ~<anonymous> C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express\lib\router\index.js:275:64
+      2    1.5%      LazyCompile: ~closeSync fs.js:419:19
+      1   50.0%        LazyCompile: ~readFileSync fs.js:361:22
+      1  100.0%          LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1008:37
+      1  100.0%            LazyCompile: ~Module.load internal/modules/cjs/loader.js:851:33
+      1   50.0%        LazyCompile: ~closeSync C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\graceful-fs\graceful-fs.js:72:24
+      1  100.0%          LazyCompile: *readFileSync fs.js:361:22
+      1  100.0%            LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1008:37
+      2    1.5%      LazyCompile: *next C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:478:32
+      2  100.0%        LazyCompile: *parse C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:269:30
+      2  100.0%          LazyCompile: ~parseWithoutProcessing C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\base.js:33:32
+      2  100.0%            LazyCompile: ~parse C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\base.js:51:15
+      2    1.5%      LazyCompile: *invokeAmbiguous C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:699:44
+      2  100.0%        LazyCompile: *compile C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:73:28
+      2  100.0%          LazyCompile: ~compileInput C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:507:24
+      2  100.0%            LazyCompile: *ret C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:515:15
+      2    1.5%      LazyCompile: *compile C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\javascript-compiler.js:73:28
+      2  100.0%        LazyCompile: ~compileInput C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:507:24
+      1   50.0%          LazyCompile: ~ret C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:515:15
+      1  100.0%            LazyCompile: *_renderTemplate C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express-handlebars\lib\express-handlebars.js:260:18
+      1   50.0%          LazyCompile: *ret C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:515:15
+      1  100.0%            LazyCompile: *render C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\express-handlebars\lib\express-handlebars.js:150:15
+     10    3.7%    LazyCompile: *Module._compile internal/modules/cjs/loader.js:953:37
+     10  100.0%      LazyCompile: ~Module._extensions..js internal/modules/cjs/loader.js:1008:37
+      9   90.0%        LazyCompile: ~Module.load internal/modules/cjs/loader.js:851:33
+      9  100.0%          LazyCompile: ~Module._load internal/modules/cjs/loader.js:648:24
+      9  100.0%            LazyCompile: ~Module.require internal/modules/cjs/loader.js:879:36
+      1   10.0%        LazyCompile: *Module.load internal/modules/cjs/loader.js:851:33
+      1  100.0%          LazyCompile: ~Module._load internal/modules/cjs/loader.js:648:24
+      1  100.0%            LazyCompile: *Module.require internal/modules/cjs/loader.js:879:36
+      3    1.1%    LazyCompile: ~getEncodingPriority C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\negotiator\lib\encoding.js:98:29
+      3  100.0%      LazyCompile: ~getPriority C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\negotiator\lib\encoding.js:149:53
+      3  100.0%        C:\Program Files\nodejs\node.exe
+      3  100.0%          LazyCompile: ~preferredEncodings C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\negotiator\lib\encoding.js:138:28
+      3  100.0%            LazyCompile: ~encodings C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\negotiator\index.js:55:52
+      3    1.1%    LazyCompile: ~Module._load internal/modules/cjs/loader.js:648:24
+      2   66.7%      LazyCompile: ~Module.require internal/modules/cjs/loader.js:879:36
+      2  100.0%        LazyCompile: ~require internal/modules/cjs/helpers.js:73:31
+      1   50.0%          Eval: ~<anonymous> C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\mongoose\lib\query.js:1:1
+      1  100.0%            LazyCompile: ~Module._compile internal/modules/cjs/loader.js:953:37
+      1   50.0%          Eval: ~<anonymous> C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\faker\lib\locales\fa\company\index.js:1:1
+      1  100.0%            LazyCompile: *Module._compile internal/modules/cjs/loader.js:953:37
+      1   33.3%      LazyCompile: *Module.require internal/modules/cjs/loader.js:879:36
+      1  100.0%        LazyCompile: ~require internal/modules/cjs/helpers.js:73:31
+      1  100.0%          LazyCompile: ~Image C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\faker\lib\image.js:9:22
+      1  100.0%            LazyCompile: ~Faker C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\faker\lib\index.js:24:16
+      3    1.1%    LazyCompile: *anonymous C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:12:42
+      3  100.0%      LazyCompile: *parse C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\parser.js:269:30
+      3  100.0%        LazyCompile: ~parseWithoutProcessing C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\base.js:33:32
+      3  100.0%          LazyCompile: ~parse C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\base.js:51:15
+      3  100.0%            LazyCompile: ~compileInput C:\Users\Danie\Documents\Proyectos - Coder\CoderServidorExpress\node_modules\handlebars\dist\cjs\handlebars\compiler\compiler.js:507:24
+
